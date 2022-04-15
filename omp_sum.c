@@ -52,7 +52,7 @@ int main(int argc, char *argv[]){
         sd_sum += pow((time[i+1] - time[i]) - avg_time, 2);
     }
     double std_dev = sqrt((sd_sum/(n_tests - 1)));
-    printf(" Execution time of parallel sum was %fs with a std deviation of %.15f \n", avg_time, std_dev);
-    printf("Serial sum = %f, parallel sum = %f \n", serial_sum(array, size), result);
+    printf(" Execution time is %fs with a std deviation of %.15f \n", avg_time, std_dev);
+    printf("Serial = %f, OMP = %f \n", serial_sum(array, size), result);
     free(array);
 }

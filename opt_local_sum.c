@@ -41,12 +41,12 @@ int main(int argc, char *argv[]){
     array = (double *) malloc(size*sizeof(double));
 
     generate_random(array, size);
-        for (int a=0; a<n_threads; a++) {
-            omp_set_num_threads(threads[a]);
-            result = opt_local_sum(array, size, threads[a]);
+        for (int thread=0; thread<n_threads; thread++) {
+            omp_set_num_threads(threads[thread]);
+
             start_time = omp_get_wtime();
             for (int i=0; i<n_tests; i++) {
-                result = opt_local_sum(array, size, threads[a]);
+                result = opt_local_sum(array, size, threads[thread]);
                 time[i] = omp_get_wtime() - start_time;
             }
             avg_time = (omp_get_wtime() - start_time) / n_tests;
@@ -55,9 +55,9 @@ int main(int argc, char *argv[]){
                 sd_sum += pow((time[i+1] - time[i]) - avg_time, 2);
             }
             double std_dev = sqrt((sd_sum/(n_tests - 1)));
-            printf("Number of threads this run it %d \n",threads[a]);
-            printf(" Execution time of parallel sum was %fs with a std deviation of %.15f \n", avg_time, std_dev);
-            printf("Control: Serial sum = %f, OMP sum = %f \n", serial_sum(array, size), result);
+            printf("Number of threads this run it %d \n",threads[thread]);
+            printf(" Execution time is %fs with a std deviation of %.15f \n", avg_time, std_dev);
+            printf("Serial = %f, OMP = %f \n", serial_sum(array, size), result);
         }
     free(array);
 }
