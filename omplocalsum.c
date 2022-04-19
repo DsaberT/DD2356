@@ -15,6 +15,7 @@ double omp_local_sum(double *x, size_t size, int n_threads) {
     #pragma omp parallel shared(local_sum)
     {
         int id = omp_get_thread_num();
+	local_sum[id] = 0;
         #pragma omp for
             for (size_t i = 0; i<size; i++) {
                 local_sum[id] += x[i];
